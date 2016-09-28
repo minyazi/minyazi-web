@@ -5,10 +5,8 @@ import java.util.Map;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.RequestAware;
 import org.apache.struts2.interceptor.SessionAware;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.minyaziutils.LogUtil;
-import com.minyaziweb.service.CommonService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,8 +23,6 @@ public abstract class BaseAction extends ActionSupport implements ApplicationAwa
 	public Map<String, Object> application;
 	public Map<String, Object> session;
 	public Map<String, Object> request;
-	
-	private CommonService commonService;
 	
 	private String token; // 令牌
 	private String message; // 提示信息
@@ -64,18 +60,6 @@ public abstract class BaseAction extends ActionSupport implements ApplicationAwa
 	@Override
 	public void setRequest(Map<String, Object> request) {
 		this.request = request;
-	}
-	
-	public CommonService getCommonService() {
-		return commonService;
-	}
-	
-	/**
-	 * Spring依赖注入<br>
-	 */
-	@Required
-	public void setCommonService(CommonService commonService) {
-		this.commonService = commonService;
 	}
 	
 	public String getToken() {
