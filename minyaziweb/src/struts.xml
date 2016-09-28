@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.devMode" value="true"/>
+	<constant name="struts.i18n.encoding" value="UTF-8"/>
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+	<constant name="struts.multipart.maxSize" value="1073741824"/><!-- 1G -->
+	
+	<package name="default" namespace="" extends="struts-default">
+		<action name="*">
+			<result name="success" type="redirect">/login.jsp</result>
+		</action>
+	</package>
+	
+	<package name="authority" namespace="/authority" extends="json-default">
+		<action name="authority" class="com.minyaziweb.action.AuthorityAction">
+			<result name="success" type="json">
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="root" namespace="/root" extends="struts-default">
+		<interceptors>
+			<!-- 异常记录拦截器 -->
+			<interceptor name="exceptionInterceptor" class="com.minyaziweb.interceptor.ExceptionInterceptor"/>
+			<interceptor-stack name="exceptionStack">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="exceptionInterceptor"/>
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="exceptionStack"/>
+		
+		<global-results>
+			<result name="login" type="redirect">/login.jsp</result>
+			<result name="error">/jsp/error.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
+		</global-results>
+		
+		<!-- 声明式异常 -->
+		<global-exception-mappings>
+			<exception-mapping result="exception" exception="java.lang.Exception"/>
+		</global-exception-mappings>
+	</package>
+	
+	<package name="index" namespace="/index" extends="root">
+		<action name="input" class="com.minyaziweb.action.LoginAction" method="input">
+			<result name="success">/jsp/login.jsp</result>
+		</action>
+		<action name="login" class="com.minyaziweb.action.LoginAction">
+			<result name="input">/login.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="namespace">/secure</param>
+				<param name="actionName">index</param>
+			</result>
+		</action>
+		<action name="logout" class="com.minyaziweb.action.LogoutAction">
+			<result name="success" type="redirect">/login.jsp</result>
+		</action>
+	</package>
+	
+	<package name="secure" namespace="/secure" extends="root">
+		<interceptors>
+			<!-- 权限检查拦截器 -->
+			<interceptor name="authorityInterceptor" class="com.minyaziweb.interceptor.AuthorityInterceptor"/>
+			<interceptor-stack name="authorityStack">
+				<interceptor-ref name="exceptionStack"/>
+				<interceptor-ref name="authorityInterceptor"/>
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="authorityStack"/>
+		
+		<action name="index">
+			<result name="success">/jsp/index.jsp</result>
+		</action>
+		<action name="welcome" class="com.minyaziweb.action.WelcomeAction">
+			<result name="success">/jsp/welcome.jsp</result>
+		</action>
+	</package>
+	
+	<package name="file" namespace="/file" extends="secure">
+		<action name="upload" class="com.minyaziweb.action.FileAction" method="upload">
+			<!-- 允许上传的文件类型 -->
+			<param name="allowedTypes"></param>
+			<!-- 允许上传的文件最大大小 -->
+			<param name="maximumSize">3145728</param><!-- 3M -->
+			
+			<result name="success" type="redirectAction">
+				<param name="namespace">/${namespace}</param>
+				<param name="actionName">${action}</param>
+			</result>
+		</action>
+		<action name="download" class="com.minyaziweb.action.FileAction" method="download">
+			<result name="success" type="stream">
+				<param name="contentType">${uploadContentType}</param>
+				<param name="inputName">download</param>
+				<param name="contentDisposition">attachment;filename="${uploadFileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+		<action name="delete" class="com.minyaziweb.action.FileAction" method="delete">
+			<result name="success" type="redirectAction">
+				<param name="namespace">/${namespace}</param>
+				<param name="actionName">${action}</param>
+			</result>
+		</action>
+	</package>
+	
+	<include file="struts-minyazi.xml"/>
+</struts>

@@ -4,7 +4,7 @@
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="jdbcUrl">jdbc:mysql://localhost:3306/testdb?useUnicode=true&amp;characterEncoding=utf8</property>
 		<property name="user">root</property>
-		<property name="password">123456</property>
+		<property name="password">rootroot</property>
 		
 		<!-- 当连接池中的连接用完时，C3P0一次性创建的新连接数 -->
 		<property name="acquireIncrement">5</property>

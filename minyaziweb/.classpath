@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="lib/hamcrest-core-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/hamcrest-library-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="lib/minyaziutils-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/jaxen-1.1-beta-6.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
@@ -62,5 +61,6 @@
 	<classpathentry kind="lib" path="lib/struts2-json-plugin-2.3.24.1.jar"/>
 	<classpathentry kind="lib" path="lib/struts2-spring-plugin-2.3.24.1.jar"/>
 	<classpathentry kind="lib" path="lib/xwork-core-2.3.24.1.jar"/>
+	<classpathentry kind="lib" path="lib/minyaziutils-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -9,7 +9,7 @@ import com.minyaziutils.LogUtil;
 import com.minyaziweb.HttpRequestSimulator;
 
 /**
- * 代码工具类Test<br>
+ * HTTP请求模拟器Test<br>
  * 
  * @author minyazi
  */
