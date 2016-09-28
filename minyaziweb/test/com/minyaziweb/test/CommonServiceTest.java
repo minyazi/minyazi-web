@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.minyaziutils.LogUtil;
+import com.minyaziweb.domain.SqlInfo;
 import com.minyaziweb.service.CommonService;
 
 /**
@@ -27,7 +28,7 @@ public class CommonServiceTest {
 	@Test
 	public void test() {
 		commonService.testTask();
-		LogUtil.info(commonService.queryToMap2("select * from test"));
+		LogUtil.info(commonService.getDatas(new SqlInfo("select * from test")));
 	}
 	
 }

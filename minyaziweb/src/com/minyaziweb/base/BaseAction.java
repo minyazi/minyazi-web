@@ -18,7 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * 
  * @author minyazi
  */
-public class BaseAction extends ActionSupport implements ApplicationAware, SessionAware, RequestAware {
+public abstract class BaseAction extends ActionSupport implements ApplicationAware, SessionAware, RequestAware {
 	
 	private static final long serialVersionUID = 1L;
 	
