@@ -1,4 +1,4 @@
-﻿package com.minyaziweb.action;
+package com.minyaziweb.action;
 
 import com.minyaziweb.base.BaseAction;
 
