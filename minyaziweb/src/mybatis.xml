@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<typeAliases>
+		<typeAlias alias="ProcessInfo" type="com.minyaziweb.domain.ProcessInfo"/>
+	</typeAliases>
+	
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC"/>
@@ -13,6 +17,7 @@
 			</dataSource>
 		</environment>
 	</environments>
+	
 	<mappers>
 		<mapper resource="com/minyaziweb/dao/mybatis/ProcessInfoMapper.xml"/>
 	</mappers>
