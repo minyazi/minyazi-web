@@ -1,4 +1,4 @@
-package com.minyaziweb.dao;
+package com.minyaziweb.dao.springjdbc;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

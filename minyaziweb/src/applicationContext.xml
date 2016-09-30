@@ -17,7 +17,7 @@
 		http://www.springframework.org/schema/task/spring-task.xsd">
 	<!-- Beans -->
 	<context:component-scan base-package="com.minyaziweb">
-		<context:include-filter type="regex" expression="com.minyaziweb.dao.*"/>
+		<context:include-filter type="regex" expression="com.minyaziweb.dao.springjdbc.*"/>
 		<context:include-filter type="regex" expression="com.minyaziweb.service.*"/>
 	</context:component-scan>
 	

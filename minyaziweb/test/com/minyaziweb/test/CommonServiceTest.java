@@ -28,7 +28,7 @@ public class CommonServiceTest {
 	@Test
 	public void test() {
 		commonService.testTask();
-		LogUtil.info(commonService.getDatas(new SqlInfo("select * from test")));
+		LogUtil.info(commonService.getDatas(new SqlInfo("select * from ProcessInfo")));
 	}
 	
 }

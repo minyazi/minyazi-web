@@ -14,7 +14,7 @@ import com.minyaziutils.PlatformException;
 import com.minyaziutils.StringUtil;
 import com.minyaziweb.Paging;
 import com.minyaziweb.base.BaseService;
-import com.minyaziweb.dao.CommonDao;
+import com.minyaziweb.dao.springjdbc.CommonDao;
 import com.minyaziweb.domain.SqlInfo;
 
 /**

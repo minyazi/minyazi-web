@@ -1,9 +1,9 @@
-package com.minyaziweb.base;
+package com.minyaziweb.dao.hibernate;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.minyaziweb.Paging;
 
@@ -14,18 +14,18 @@ import com.minyaziweb.Paging;
  */
 public abstract class BaseDao {
 	
-	private JdbcTemplate jdbcTemplate;
+	private HibernateTemplate hibernateTemplate;
 	
 	public BaseDao() {
 		
 	}
 	
-	public BaseDao(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public BaseDao(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
 	}
 	
-	public JdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
 	}
 	
 	/**
@@ -33,8 +33,8 @@ public abstract class BaseDao {
 	 */
 	@Required
 	@Resource
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
 	}
 	
 	/**

@@ -62,5 +62,6 @@
 	<classpathentry kind="lib" path="lib/struts2-spring-plugin-2.3.24.1.jar"/>
 	<classpathentry kind="lib" path="lib/xwork-core-2.3.24.1.jar"/>
 	<classpathentry kind="lib" path="lib/minyaziutils-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/mybatis-3.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
