@@ -16,6 +16,10 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public AuthorityInterceptor() {
+		
+	}
+	
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
 		ActionContext context = invocation.getInvocationContext();

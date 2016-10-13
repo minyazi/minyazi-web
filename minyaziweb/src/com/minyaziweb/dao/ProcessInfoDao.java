@@ -2,6 +2,7 @@ package com.minyaziweb.dao;
 
 import java.util.List;
 
+import com.minyaziweb.base.PagingDao;
 import com.minyaziweb.domain.ProcessInfo;
 
 /**
@@ -9,7 +10,7 @@ import com.minyaziweb.domain.ProcessInfo;
  * 
  * @author minyazi
  */
-public interface ProcessInfoDao {
+public interface ProcessInfoDao extends PagingDao {
 	
 	/**
 	 * 新增处理信息<br>

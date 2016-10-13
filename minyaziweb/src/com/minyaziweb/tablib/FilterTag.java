@@ -23,6 +23,10 @@ public class FilterTag extends TagSupport {
 	private String value;
 	private String chain;
 	
+	public FilterTag() {
+		
+	}
+	
 	public void setValue(String value) {
 		this.value = value;
 	}

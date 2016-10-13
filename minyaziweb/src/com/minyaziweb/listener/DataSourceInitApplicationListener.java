@@ -13,6 +13,10 @@ import com.minyaziutils.JdbcUtil;
  */
 public class DataSourceInitApplicationListener implements ServletContextListener {
 	
+	public DataSourceInitApplicationListener() {
+		
+	}
+	
 	/**
 	 * 应用启动时调用
 	 */

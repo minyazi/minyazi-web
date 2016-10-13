@@ -13,6 +13,10 @@ import com.minyaziutils.CodeUtil;
  */
 public class CodeInitApplicationListener implements ServletContextListener {
 	
+	public CodeInitApplicationListener() {
+		
+	}
+	
 	/**
 	 * 应用启动时调用
 	 */

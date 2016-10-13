@@ -14,13 +14,17 @@ import com.minyaziweb.dao.ProcessInfoDao;
 import com.minyaziweb.domain.ProcessInfo;
 
 /**
- * MyBatisTest<br>
+ * MyBatis Test<br>
  * 
  * @author minyazi
  */
 public class MyBatisTest {
 	
 	private static SqlSessionFactory sessionFactory;
+	
+	public MyBatisTest() {
+		
+	}
 	
 	@BeforeClass
 	public static void init() {

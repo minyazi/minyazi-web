@@ -110,4 +110,12 @@ public class Paging<T> {
 		this.list = list;
 	}
 	
+	@Override
+	public String toString() {
+		if (list == null) {
+			return super.toString();
+		}
+		return list.toString();
+	}
+	
 }

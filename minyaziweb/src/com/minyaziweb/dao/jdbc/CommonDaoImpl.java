@@ -1,9 +1,10 @@
-package com.minyaziweb.dao.springjdbc;
+package com.minyaziweb.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.minyaziutils.LogUtil;
 import com.minyaziweb.Paging;
+import com.minyaziweb.dao.CommonDao;
 
 /**
  * 公共Dao<br>
@@ -26,16 +28,12 @@ import com.minyaziweb.Paging;
  * @author minyazi
  */
 @Repository("commonDao")
-public class CommonDao {
+public class CommonDaoImpl implements CommonDao {
 	
 	private JdbcTemplate jdbcTemplate;
 	
-	public CommonDao() {
+	public CommonDaoImpl() {
 		
-	}
-	
-	public CommonDao(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
 	}
 	
 	public JdbcTemplate getJdbcTemplate() {
@@ -57,7 +55,7 @@ public class CommonDao {
 	 * @param sql SQL语句
 	 * @return 返回查询结果。
 	 */
-	public List<Map<String, Object>> queryToMap(String sql) {
+	public List<Map<String, Object>> queryToList(String sql) {
 		List<Map<String, Object>> result = this.getJdbcTemplate().queryForList(sql);
 		
 		LogUtil.info("（执行SQL）" + sql + "，（执行结果）" + result.size());
@@ -72,10 +70,11 @@ public class CommonDao {
 	 * @param params 参数集
 	 * @return 返回查询结果。
 	 */
-	public List<Map<String, Object>> queryToMap(String sql, Object... params) {
+	public List<Map<String, Object>> queryToList(String sql, Object... params) {
 		List<Map<String, Object>> result = this.getJdbcTemplate().queryForList(sql, params);
 		
 		LogUtil.info("（执行SQL）" + sql + "，（执行结果）" + result.size());
+		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		return result;
 	}
@@ -86,7 +85,7 @@ public class CommonDao {
 	 * @param sql SQL语句
 	 * @return 返回查询结果。
 	 */
-	public List<Map<String, String>> queryToMap2(String sql) {
+	public List<Map<String, String>> queryToList2(String sql) {
 		List<Map<String, String>> result = this.getJdbcTemplate().query(sql, new ResultSetExtractor<List<Map<String, String>>>() {
 			@Override
 			public List<Map<String, String>> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -116,7 +115,7 @@ public class CommonDao {
 	 * @param params 参数集
 	 * @return 返回查询结果。
 	 */
-	public List<Map<String, String>> queryToMap2(String sql, Object... params) {
+	public List<Map<String, String>> queryToList2(String sql, Object... params) {
 		List<Map<String, String>> result = this.getJdbcTemplate().query(sql, new ResultSetExtractor<List<Map<String, String>>>() {
 			@Override
 			public List<Map<String, String>> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -135,6 +134,7 @@ public class CommonDao {
 		}, params);
 		
 		LogUtil.info("（执行SQL）" + sql + "，（执行结果）" + result.size());
+		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		return result;
 	}
@@ -147,7 +147,7 @@ public class CommonDao {
 	 * @param sql SQL语句
 	 * @return 返回查询结果。
 	 */
-	public <T> List<T> queryToBean(Class<T> c, String sql) {
+	public <T> List<T> queryToList(Class<T> c, String sql) {
 		List<T> result = this.getJdbcTemplate().query(sql, new BeanPropertyRowMapper<T>(c));
 		
 		LogUtil.info("（执行SQL）" + sql + "，（执行结果）" + result.size());
@@ -164,12 +164,52 @@ public class CommonDao {
 	 * @param params 参数集
 	 * @return 返回查询结果。
 	 */
-	public <T> List<T> queryToBean(Class<T> c, String sql, Object... params) {
+	public <T> List<T> queryToList(Class<T> c, String sql, Object... params) {
 		List<T> result = this.getJdbcTemplate().query(sql, new BeanPropertyRowMapper<T>(c), params);
 		
 		LogUtil.info("（执行SQL）" + sql + "，（执行结果）" + result.size());
+		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		return result;
+	}
+	
+	/**
+	 * 查询数据<br>
+	 * 
+	 * @param <T> 类型参数
+	 * @param c 类型参数
+	 * @param sql SQL语句
+	 * @return 返回查询结果。
+	 */
+	public <T> T queryToBean(Class<T> c, String sql) {
+		List<T> result = this.queryToList(c, sql);
+		
+		T t = null;
+		if (result.size() != 0) {
+			t = result.get(0);
+		}
+		
+		return t;
+	}
+	
+	/**
+	 * 查询数据<br>
+	 * 
+	 * @param <T> 类型参数
+	 * @param c 类型参数
+	 * @param sql SQL语句
+	 * @param params 参数集
+	 * @return 返回查询结果。
+	 */
+	public <T> T queryToBean(Class<T> c, String sql, Object... params) {
+		List<T> result = this.queryToList(c, sql, params);
+		
+		T t = null;
+		if (result.size() != 0) {
+			t = result.get(0);
+		}
+		
+		return t;
 	}
 	
 	/**
@@ -197,6 +237,7 @@ public class CommonDao {
 		int result = this.getJdbcTemplate().update(sql, params);
 		
 		LogUtil.info("（执行SQL）" + sql + "，（执行结果）" + result);
+		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		return result;
 	}
@@ -215,16 +256,14 @@ public class CommonDao {
 		_sql.append("select count(*) from (").append(sql).append(") as T");
 		int totalNumber = this.getJdbcTemplate().queryForObject(_sql.toString(), Integer.class);
 		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（执行SQL）" + _sql.toString() + "，（执行结果）" + totalNumber);
 		
 		Paging<Map<String, Object>> result = new Paging<Map<String, Object>>(page, pageSize, totalNumber);
 		
 		// 获取当前页的所有记录
 		_sql = new StringBuilder(500);
 		_sql.append(sql).append(" limit ").append(result.getOffset()).append(",").append(pageSize);
-		result.setList(this.queryToMap(_sql.toString()));
-		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + result.getList().size());
+		result.setList(this.queryToList(_sql.toString()));
 		
 		return result;
 	}
@@ -244,16 +283,15 @@ public class CommonDao {
 		_sql.append("select count(*) from (").append(sql).append(") as T");
 		int totalNumber = this.getJdbcTemplate().queryForObject(_sql.toString(), Integer.class, params);
 		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（执行SQL）" + _sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		Paging<Map<String, Object>> result = new Paging<Map<String, Object>>(page, pageSize, totalNumber);
 		
 		// 获取当前页的所有记录
 		_sql = new StringBuilder(500);
 		_sql.append(sql).append(" limit ").append(result.getOffset()).append(",").append(pageSize);
-		result.setList(this.queryToMap(_sql.toString(), params));
-		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + result.getList().size());
+		result.setList(this.queryToList(_sql.toString(), params));
 		
 		return result;
 	}
@@ -272,16 +310,14 @@ public class CommonDao {
 		_sql.append("select count(*) from (").append(sql).append(") as T");
 		int totalNumber = this.getJdbcTemplate().queryForObject(_sql.toString(), Integer.class);
 		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（执行SQL）" + _sql.toString() + "，（执行结果）" + totalNumber);
 		
 		Paging<Map<String, String>> result = new Paging<Map<String, String>>(page, pageSize, totalNumber);
 		
 		// 获取当前页的所有记录
 		_sql = new StringBuilder(500);
 		_sql.append(sql).append(" limit ").append(result.getOffset()).append(",").append(pageSize);
-		result.setList(this.queryToMap2(_sql.toString()));
-		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + result.getList().size());
+		result.setList(this.queryToList2(_sql.toString()));
 		
 		return result;
 	}
@@ -301,16 +337,15 @@ public class CommonDao {
 		_sql.append("select count(*) from (").append(sql).append(") as T");
 		int totalNumber = this.getJdbcTemplate().queryForObject(_sql.toString(), Integer.class, params);
 		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（执行SQL）" + _sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		Paging<Map<String, String>> result = new Paging<Map<String, String>>(page, pageSize, totalNumber);
 		
 		// 获取当前页的所有记录
 		_sql = new StringBuilder(500);
 		_sql.append(sql).append(" limit ").append(result.getOffset()).append(",").append(pageSize);
-		result.setList(this.queryToMap2(_sql.toString(), params));
-		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + result.getList().size());
+		result.setList(this.queryToList2(_sql.toString(), params));
 		
 		return result;
 	}
@@ -331,16 +366,14 @@ public class CommonDao {
 		_sql.append("select count(*) from (").append(sql).append(") as T");
 		int totalNumber = this.getJdbcTemplate().queryForObject(_sql.toString(), Integer.class);
 		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（执行SQL）" + _sql.toString() + "，（执行结果）" + totalNumber);
 		
 		Paging<T> result = new Paging<T>(page, pageSize, totalNumber);
 		
 		// 获取当前页的所有记录
 		_sql = new StringBuilder(500);
 		_sql.append(sql).append(" limit ").append(result.getOffset()).append(",").append(pageSize);
-		result.setList(this.queryToBean(c, _sql.toString()));
-		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + result.getList().size());
+		result.setList(this.queryToList(c, _sql.toString()));
 		
 		return result;
 	}
@@ -362,16 +395,15 @@ public class CommonDao {
 		_sql.append("select count(*) from (").append(sql).append(") as T");
 		int totalNumber = this.getJdbcTemplate().queryForObject(_sql.toString(), Integer.class, params);
 		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（执行SQL）" + _sql.toString() + "，（执行结果）" + totalNumber);
+		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		Paging<T> result = new Paging<T>(page, pageSize, totalNumber);
 		
 		// 获取当前页的所有记录
 		_sql = new StringBuilder(500);
 		_sql.append(sql).append(" limit ").append(result.getOffset()).append(",").append(pageSize);
-		result.setList(this.queryToBean(c, _sql.toString(), params));
-		
-		LogUtil.info("（执行SQL）" + sql.toString() + "，（执行结果）" + result.getList().size());
+		result.setList(this.queryToList(c, _sql.toString(), params));
 		
 		return result;
 	}

@@ -17,6 +17,10 @@ public class ExceptionInterceptor extends AbstractInterceptor {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public ExceptionInterceptor() {
+		
+	}
+	
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
 		ActionContext context = invocation.getInvocationContext();

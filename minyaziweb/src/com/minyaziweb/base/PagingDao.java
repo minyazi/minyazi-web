@@ -1,17 +1,13 @@
-package com.minyaziweb.dao.mybatis;
+package com.minyaziweb.base;
 
 import com.minyaziweb.Paging;
 
 /**
- * 基础Dao<br>
+ * 分页Dao<br>
  * 
  * @author minyazi
  */
-public abstract class BaseDao {
-	
-	public BaseDao() {
-		
-	}
+public interface PagingDao {
 	
 	/**
 	 * 分页查询数据<br>

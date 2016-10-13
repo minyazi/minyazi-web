@@ -20,6 +20,10 @@ import com.minyaziutils.PlatformException;
  */
 public class HttpRequestSimulator {
 	
+	private HttpRequestSimulator() {
+		
+	}
+	
 	/**
 	 * 模拟post请求<br>
 	 * 

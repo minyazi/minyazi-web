@@ -15,6 +15,10 @@ import com.minyaziweb.HttpRequestSimulator;
  */
 public class HttpRequestSimulatorTest {
 	
+	public HttpRequestSimulatorTest() {
+		
+	}
+	
 	@Test
 	public void testInit() {
 		String urlStr = "http://58.67.194.193:8080/cnapstst/cnapstst/jsp/login.jsp";
