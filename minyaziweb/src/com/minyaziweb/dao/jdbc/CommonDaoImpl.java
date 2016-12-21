@@ -16,9 +16,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 import org.springframework.stereotype.Repository;
 
 import com.minyaziutils.LogUtil;
+import com.minyaziutils.StringUtil;
 import com.minyaziweb.Paging;
 import com.minyaziweb.dao.CommonDao;
 
@@ -240,6 +243,47 @@ public class CommonDaoImpl implements CommonDao {
 		LogUtil.info("（SQL参数）" + Arrays.toString(params));
 		
 		return result;
+	}
+	
+	/**
+	 * 保存数据<br>
+	 * 
+	 * @param tableName 表名
+	 * @param data 要保存的数据
+	 * @return 返回保存结果。
+	 */
+	public int insert(String tableName, Map<String, String> data) {
+		StringBuilder sql = new StringBuilder(500);
+		sql.append("select * from ").append(tableName);
+		SqlRowSet srs = this.getJdbcTemplate().queryForRowSet(sql.toString());
+		SqlRowSetMetaData srsmd = srs.getMetaData();
+		int columnCount = srsmd.getColumnCount();
+		
+		StringBuilder fields = new StringBuilder(500);
+		StringBuilder values = new StringBuilder(500);
+		Object[] params = new Object[columnCount];
+		for (int i = 1; i <= columnCount; i++) {
+			String columnName = srsmd.getColumnName(i);
+			String columnValue = StringUtil.formatNullString(data.get(columnName));
+			
+			if (i != columnCount) {
+				fields.append(columnName).append(",");
+				values.append("?,");
+			} else {
+				fields.append(columnName);
+				values.append("?");
+			}
+			params[i - 1] = columnValue;
+		}
+		
+		if (columnCount > 0) {
+			sql = new StringBuilder(500);
+			sql.append("insert into ").append(tableName).append(" (").append(fields).append(")");
+			sql.append(" values (").append(values).append(")");
+			return this.update(sql.toString(), params);
+		} else {
+			return 0;
+		}
 	}
 	
 	/**
