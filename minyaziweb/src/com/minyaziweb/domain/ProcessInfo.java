@@ -49,19 +49,19 @@ public class ProcessInfo implements Serializable {
 		}
 		
 		ProcessInfo other = (ProcessInfo) obj;
-		return other.processCode.equals(this.processCode);
+		return other.getProcessCode().equals(this.getProcessCode());
 	}
 
 	@Override
 	public int hashCode() {
 		int result = 17;
-		result = result * 31 + this.processCode == null ? 0 : this.processCode.hashCode();
+		result = result * 31 + this.getProcessCode() == null ? 0 : this.getProcessCode().hashCode();
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return this.processMesg == null ? "" : this.processMesg;
+		return this.getProcessMesg() == null ? "" : this.getProcessMesg();
 	}
 	
 }
