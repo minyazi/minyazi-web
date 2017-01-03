@@ -23,7 +23,7 @@ public class ProcessInfo implements Serializable {
 	}
 	
 	public String getProcessCode() {
-		return processCode;
+		return this.processCode;
 	}
 	
 	public void setProcessCode(String processCode) {
@@ -31,7 +31,7 @@ public class ProcessInfo implements Serializable {
 	}
 	
 	public String getProcessMesg() {
-		return processMesg;
+		return this.processMesg;
 	}
 	
 	public void setProcessMesg(String processMesg) {
@@ -40,7 +40,7 @@ public class ProcessInfo implements Serializable {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (obj == this) {
 			return true;
 		}
 		
@@ -48,28 +48,20 @@ public class ProcessInfo implements Serializable {
 			return false;
 		}
 		
-		ProcessInfo info = (ProcessInfo) obj;
-		if (processCode != null && processCode.equals(info.getProcessCode())) {
-			return true;
-		}
-		
-		return false;
+		ProcessInfo other = (ProcessInfo) obj;
+		return other.processCode.equals(this.processCode);
 	}
 
 	@Override
 	public int hashCode() {
-		if (processCode == null) {
-			return super.hashCode();
-		}
-		return processCode.hashCode() * 3;
+		int result = 17;
+		result = result * 31 + this.processCode == null ? 0 : this.processCode.hashCode();
+		return result;
 	}
 
 	@Override
 	public String toString() {
-		if (processMesg == null) {
-			return super.toString();
-		}
-		return processMesg;
+		return this.processMesg == null ? "" : this.processMesg;
 	}
 	
 }
