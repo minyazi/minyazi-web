@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minyaziweb.dao.ProcessInfoDao">
+    <insert id="insert" parameterType="ProcessInfo">
+        insert into ProcessInfo (processCode, processMesg) values (#{processCode}, #{processMesg})
+    </insert>
+    <delete id="deleteById" parameterType="String">
+        delete from ProcessInfo where processCode=#{processCode}
+    </delete>
+    <delete id="deleteAll">
+        delete from ProcessInfo
+    </delete>
+    <update id="update" parameterType="ProcessInfo">
+        update ProcessInfo set processMesg=#{processMesg} where processCode=#{processCode}
+    </update>
+    <select id="selectById" parameterType="String" resultType="ProcessInfo">
+        select processMesg from ProcessInfo where processCode=#{processCode}
+    </select>
+    <select id="selectAll" resultType="ProcessInfo">
+        select processCode,processMesg from ProcessInfo order by processCode
+    </select>
+</mapper>

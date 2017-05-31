@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+    <!-- Beans -->
+    <context:component-scan base-package="com.minyazi.web">
+        <context:include-filter type="regex" expression="com.minyazi.web.dao.jdbc.*"/>
+        <context:include-filter type="regex" expression="com.minyazi.web.service.*"/>
+        
+        <context:exclude-filter type="regex" expression="com.minyazi.web.dao.hibernate.*"/>
+        <context:exclude-filter type="regex" expression="com.minyazi.web.dao.mybatis.*"/>
+    </context:component-scan>
+    
+    <!-- C3P0数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/testdb?useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="user" value="root"/>
+        <property name="password" value="rootroot"/>
+        
+        <!-- 当连接池中的连接用完时，C3P0一次性创建的新连接数 -->
+        <property name="acquireIncrement" value="5"/>
+        <!-- 初始化时创建的连接数，取值应在minPoolSize与maxPoolSize之间 -->
+        <property name="initialPoolSize" value="10"/>
+        <!-- 连接池中保留的最小连接数 -->
+        <property name="minPoolSize" value="5"/>
+        <!-- 连接池中保留的最大连接数 -->
+        <property name="maxPoolSize" value="30"/>
+        <!-- 最大空闲时间，60秒内未使用则连接被丢弃，若为0则永不丢弃 -->
+        <property name="maxIdleTime" value="60"/>
+        <!-- 每60秒检查所有连接池中的空闲连接 -->
+        <property name="idleConnectionTestPeriod" value="60"/>
+    </bean>
+    
+    <!-- Spring JdbcTemplate -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- 数据源事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- 注解方式声明式事务管理 -->
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+    
+    <!-- 配置方式声明式事务管理 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="*" read-only="true" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="txPointcut" expression="execution(* com.minyazi.web.service..*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+    
+    <!-- 定时任务管理 -->
+    <task:scheduled-tasks>
+        <task:scheduled ref="commonService" method="testTask" cron="0 0 7 * * ?"/><!-- 每天早上7点执行一次 -->
+    </task:scheduled-tasks>
+    <task:scheduled-tasks>
+        <task:scheduled ref="commonService" method="testTask" cron="0 0/30 * * * ?"/><!-- 每隔30分钟执行一次 -->
+    </task:scheduled-tasks>
+</beans>
