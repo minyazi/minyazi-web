@@ -5,7 +5,7 @@
 * 更改项目名称为minyazi-web。
 * 使用Maven重构项目。
 
-##V1.0版本说明（2016/09/28）
+## V1.0版本说明（2016/09/28）
 * Paging：分页Model，用于实现分页查询的基础类。
 * FilterTag：字符过滤器Tag，用于对字符串进行过滤处理。
 * 提供两个应用监听器：DataSourceInitApplicationListener和CodeInitApplicationListener，用于数据库连接池和代码列表的初始化。
